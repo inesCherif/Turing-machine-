@@ -1,7 +1,13 @@
 # Turing Machine Simulator
 
 ## Description
-This project is a web-based simulation of a Turing machine. The Turing machine operates on a tape of binary data using a set of predefined instructions. This simulation allows users to explore the workings of a Turing machine and experiment with different programs.
+This project is a web-based simulation of a Turing machine. The Turing machine operates on a tape of binary data using a set of predefined instructions. Users can interactively explore the Turing machine's behavior and experiment with different programs, such as:
+- Replacing binary digits (0 → 1)
+- Adding unary numbers
+- Subtracting unary numbers
+![Interface](images/interface)
+
+
 
 ## Features
 - Simulate basic Turing machine operations such as replacing, adding, or subtracting binary digits.
@@ -19,6 +25,11 @@ This project is a web-based simulation of a Turing machine. The Turing machine o
 - HTML
 - CSS
 - JavaScript
+
+
+
+## Code Explanation
+
 
 
 
