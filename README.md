@@ -29,11 +29,11 @@ This project is a web-based simulation of a Turing machine. The Turing machine o
 
 
 ## Code Explanation
-At the beginning of the code, you will find some styles that you can modify as you like:
-
+At the beginning of the code, you will find some styles. You can freely modify these styles as needed to change the appearance of the simulator.
 ```html
 <style> ... </style>
 ```
+The HTML page consists of two empty tables, which are dynamically generated using JavaScript to represent the tape and the program.
 
 
 
