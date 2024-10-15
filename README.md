@@ -33,7 +33,67 @@ At the beginning of the code, you will find some styles. You can freely modify t
 ```html
 <style> ... </style>
 ```
+
 The HTML page consists of two empty tables, which are dynamically generated using JavaScript to represent the tape and the program.
+
+There are two input fields to provide the current state and the reading head position:
+```html
+<label>État : </label>
+<input />
+<label>Tête de lecture : </label>
+<input />
+```
+
+After that we find two buttons:
+1. "Suivant" Button: When clicked, it executes the turing() function, which performs the next step in the Turing machine's process.
+```html
+<button type="button" id="suiv" onclick="turing()">Suivant</button>
+```
+
+
+
+
+
+
+
+
+2. "Auto" Button: When clicked, it starts automatic execution of the Turing machine. The button toggles between starting and stopping the automatic execution.
+```html
+<button type="button" id="suiv" onclick="turing()">Suivant</button>
+``` 
+When we click the button, a function called `turing()` will execute. This function is responsible for the program:
+
+```javascript
+var turing = () => {
+    // Get the current state and tape symbol to determine the next action
+    var etat = document.getElementById("etat").value; // Current state
+    var lecture = +document.getElementById("lecture").value + 10; // Current position on the tape (adjusted by +10)
+    var c = document.getElementById("r" + lecture).value; // Current symbol on the tape at the current position
+
+    // If the symbol is empty, default to "b"
+    if (c == "") c = "b";
+
+    // Find all input checkboxes that match the current state and tape symbol
+    var programme = [...document.querySelectorAll("input")]
+        .filter((i) => i.id.slice(0, 2) == etat + c && i.checked == true)
+        .map((i) => i.id.slice(-1));
+
+    // Determine what action to take based on the program rules
+    var ecrire = programme.find((p) => CASES.includes(p)); // Determine what to write on the tape
+    if (ecrire) document.getElementById("r" + lecture).value = ecrire == "b" ? "" : ecrire;
+
+    var dep = programme.find((p) => "gd".includes(p)); // Determine direction to move (left or right)
+    if (dep)
+        document.getElementById("lecture").value = +document.getElementById("lecture").value + (dep == "g" ? -1 : 1);
+
+    var etat_suiv = programme.find((p) => ETATS.includes(p)); // Determine next state
+    if (etat_suiv) document.getElementById("etat").value = etat_suiv;
+
+    couleurs(etat + c, document.getElementById("lecture").value); // Function to handle visual changes (not defined in the snippet)
+};
+```
+
+
 
 
 
