@@ -174,6 +174,11 @@ var exemples = {
     // More examples like B, C, etc.
 };
 ```
+![The automaton that replaces O with 1](./images/1.png)
+![Automaton for adding two unary numbers](./images/2.png)
+![Automaton for subtracting two unary numbers](./images/3.png)
+![Automaton for doubling the elements](./images/4.png)
+
 
 ## Customization
 
@@ -200,5 +205,5 @@ var exemples = {
     },
   },
 };
-
+```
 
