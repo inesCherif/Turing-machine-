@@ -1,16 +1,17 @@
 # Turing Machine Simulator
 
 ## Description
-This is a web-based Turing Machine simulator that allows users to perform basic Turing Machine operations...
+This project is a web-based simulation of a Turing machine. The Turing machine operates on a tape of binary data using a set of predefined instructions. This simulation allows users to explore the workings of a Turing machine and experiment with different programs.
 
 ## Features
-- Interactive simulation
-- Predefined examples like...
-- Manual and automatic modes
+- Simulate basic Turing machine operations such as replacing, adding, or subtracting binary digits.
+- Predefined examples of Turing machine programs to quickly start with.
+- Interactive user interface for controlling the tape, setting initial states, and manually stepping through the machine's operations.
+- Customizable style and functionality to suit your needs.
 
 ## How to Use
-1. Clone the repository...
-2. Open the `index.html` file in a browser...
+1. Clone or download the repository to your local machine.
+2. Open the `index.html` file in a browser to start using the Turing machine simulator.
 
 
 
@@ -19,6 +20,32 @@ This is a web-based Turing Machine simulator that allows users to perform basic 
 - CSS
 - JavaScript
 
+
+
 ## Customization
-You can customize...
+
+You can easily customize both the appearance and functionality of the simulator:
+
+### CSS Styling
+
+To change the look and feel, modify the CSS rules in the `<style>` block located in the `<head>` section of the HTML file. You can change colors, fonts, button styles, and more.
+
+### Adding Your Own Turing Machine Programs
+
+You can add your own Turing machine programs by modifying the `exemples` object in the JavaScript section of the code. Each new example should follow the structure:
+
+```javascript
+var exemples = {
+  CustomExample: {
+    debut: ["A", 0, "your_initial_tape_content"],
+    tete: 0, // Initial head position
+    programme: {
+      // Define the program's states and transitions
+      A0: "B",  // State A reads 0, moves to state B
+      A1: "d",  // State A reads 1, writes a 1 and moves right
+      Bb: "F",  // State B finishes the execution
+    },
+  },
+};
+
 
