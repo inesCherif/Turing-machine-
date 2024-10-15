@@ -29,7 +29,10 @@ This project is a web-based simulation of a Turing machine. The Turing machine o
 
 
 ## Code Explanation
+At the beginning of the code, you will find some styles that you can modify as you like:
 
+```html
+<style> ... </style>
 
 
 
