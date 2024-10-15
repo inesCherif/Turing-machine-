@@ -33,6 +33,7 @@ At the beginning of the code, you will find some styles that you can modify as y
 
 ```html
 <style> ... </style>
+```
 
 
 
