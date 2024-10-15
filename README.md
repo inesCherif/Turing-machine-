@@ -49,18 +49,6 @@ After that we find two buttons:
 ```html
 <button type="button" id="suiv" onclick="turing()">Suivant</button>
 ```
-
-
-
-
-
-
-
-
-2. "Auto" Button: When clicked, it starts automatic execution of the Turing machine. The button toggles between starting and stopping the automatic execution.
-```html
-<button type="button" id="suiv" onclick="turing()">Suivant</button>
-``` 
 When we click the button, a function called `turing()` will execute. This function is responsible for the program:
 
 ```javascript
@@ -93,9 +81,99 @@ var turing = () => {
 };
 ```
 
+2. "Auto" Button: When clicked, it starts automatic execution of the Turing machine. The button toggles between starting and stopping the automatic execution.
+```html
+<button type="button" id="suiv" onclick="turing()">Suivant</button>
+``` 
+The second button is automatic, which will make the Turing machine function run automatically:
 
+```javascript
+var auto = (e) => {
+    // Check if the input argument e is "Auto"
+    if (e == "Auto") {
+        // Start automatic execution of the turing function every 500 milliseconds
+        id_auto = setInterval(() => turing(), 500);
 
+        // Change the button text to "Stop"
+        document.getElementById("auto").innerText = "Stop";
+    } else {
+        // If e is not "Auto", stop the automatic execution
+        clearInterval(id_auto);
 
+        // Change the button text back to "Auto"
+        document.getElementById("auto").innerText = "Auto";
+    }
+};
+```
+
+After the buttons, we have clickable links. When we click one of them, a function called `charger()` will be triggered, which takes an object property as a parameter, for example `exemples.A`:
+
+```html
+<ul>
+    <li>
+        <a href="#" onclick="charger(exemples.A)">Remplacer les 0 par des 1</a>
+    </li>
+</ul>
+```
+
+The `charger` function is used to load a specific state based on an example (`ex`). It resets the state, updates the tape, sets the machine's head position, and marks the relevant program rules as active (checked):
+
+```javascript
+var charger = (ex) => {
+    // Clear the current state or reset the interface
+    effacer(); // Likely a function that erases or resets the current setup
+
+    // Set the machine's initial state
+    document.getElementById("etat").value = ex.debut[0]; // Set the initial state of the Turing machine from ex.debut[0]
+
+    // Set the initial position of the tape head (where the machine starts reading/writing)
+    document.getElementById("lecture").value = ex.tete; // Set the head position from ex.tete
+
+    // Load the initial tape content
+    [...ex.debut[2]].forEach(
+        (c, k) => {
+            // For each character on the tape (ex.debut[2] contains the tape's initial content)
+            // Set the value of the corresponding tape cell based on its position
+            // If the character is 'b' (blank), the value is set to an empty string
+            // Otherwise, the character itself is set as the value
+            document.getElementById("r" + (ex.debut[1] + k + 10)).value = c == "b" ? "" : c;
+        }
+    );
+
+    // Load the program rules (transitions) for the machine
+    Object.entries(ex.programme).forEach(([l, p]) =>
+        // For each entry in ex.programme (which contains the rules for the machine)
+        // l is the key (state + symbol combination), p is the associated program (actions)
+        [...p].forEach((c) => {
+            // Mark the corresponding checkbox as "checked" (active) for the program rule
+            document.getElementById(l + c).checked = true;
+        })
+    );
+
+    // Apply the visual changes to the interface based on the initial state and head position
+    couleurs(ex.debut[0] + ex.debut[2][0], ex.tete + ""); // Update colors or visual cues
+};
+```
+
+The `exemples` object contains different configurations for Turing machine examples:
+
+```javascript
+var exemples = {
+    A: {
+        debut: ["A", 0, "001101"], // Initial state, tape start position, and tape content
+        tete: -3,                  // Initial head position on the tape
+        programme: {               // Program rules defining the machine's behavior
+            Ab: "d",               // If in state A and reading blank ('b'), move right (d)
+            A0: "B",               // If in state A and reading '0', transition to state B
+            A1: "B",               // If in state A and reading '1', transition to state B
+            B0: "1d",              // If in state B and reading '0', write '1' and move right (d)
+            B1: "d",               // If in state B and reading '1', move right
+            Bb: "F",               // If in state B and reading blank ('b'), transition to final state F
+        },
+    },
+    // More examples like B, C, etc.
+};
+```
 
 ## Customization
 
