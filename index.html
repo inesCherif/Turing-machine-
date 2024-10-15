@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Machine de Turing</title>
+    <style>
+      body {
+        background-color: #c09bb1;
+        color: white;
+        text-align: center;
+      }
+
+      ul {
+        text-align: left;
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: bold;
+      }
+
+      table {
+        background-color: #605678;
+        box-shadow: 2px 2px 6px 4px #000;
+        color: black;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      [type="checkbox"] {
+        color: black;
+      }
+
+      table#ruban {
+        width: 80%;
+      }
+      .actif {
+        background-color: #90ee90;
+      }
+
+      a {
+        color: white;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #605678;
+      }
+
+      label {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+      }
+      button:hover {
+        background-color: #605678;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Machine de Turing</h1>
+    <table id="programme"></table>
+    <br />
+    <table id="ruban" border="1"></table>
+    <br />
+    <label>État : </label><input type="text" id="etat" size="1" value="A" />
+    <label>Tête de lecture : </label
+    ><input type="text" id="lecture" size="3" value="0" />
+    <button type="button" id="suiv" onclick="turing()">Suivant</button
+    ><button type="button" id="auto" onclick="auto(this.innerText)">Auto</button
+    ><br />
+    <ul>
+      <li>
+        <a href="#" onclick="charger(exemples.A)">Remplacer les 0 par des 1</a>
+      </li>
+      <li>
+        <a href="#" onclick="charger(exemples.B)"
+          >Addition unaire, exemple: 11(2) + 111(3) = 11111(5)</a
+        >
+      </li>
+      <li>
+        <a href="#" onclick="charger(exemples.D)"
+          >Soustraction unaire où x < y , exemple: 111(3) - 11111(5) = 11(2)
+        </a>
+      </li>
+      <li>
+        <a href="#" onclick="charger(exemples.C)"
+          >Doubler les éléments, exemple: 111 ➜ 111111</a
+        >
+      </li>
+    </ul>
+
+    <script>
+      // $ est une fonction qui sélectionne un seul élément du DOM avec un sélecteur CSS
+      var $ = (id) => document.querySelector(id);
+      // Sélectionne plusieurs éléments
+      var $$ = (id) => document.querySelectorAll(id);
+      const ETATS = "ABCDEF";
+      const CASES = "b01";
+      var id_auto;
+      var programme = $("#programme");
+      var ruban = $("#ruban");
+      var papier = Array(21).fill(0);
+      var entete = [...("el" + CASES + "gd" + ETATS)];
+
+      // ***Création tableau***
+      var ligne = programme.insertRow(0);
+      entete.forEach((c) => (ligne.insertCell().innerHTML = c));
+      [...ETATS].forEach((e) =>
+        [...CASES].forEach((l) => {
+          ligne = programme.insertRow(-1);
+          ligne.id = e + l;
+          entete.forEach(
+            (c, k) =>
+              (ligne.insertCell().innerHTML =
+                // La première cellule contient l'état (e), la deuxième la case (l)
+                k == 0
+                  ? e
+                  : k == 1
+                  ? l
+                  : // Les autres cellules contiennent un champ de type checkbox
+                    '<input type="checkbox" id="' + e + l + c + '">')
+          );
+        })
+      );
+
+      var ligne = ruban.insertRow(0);
+      papier.forEach(
+        (c, k) =>
+          (ligne.insertCell().innerHTML =
+            '<input type="text" size=1 id="r' + k + '">')
+      );
+      var ligne = ruban.insertRow(-1);
+      ligne.id = "tete";
+      papier.forEach((c, k) => (ligne.insertCell().innerHTML = k - 10));
+
+      var couleurs = (l, v) => {
+        effacer_coul();
+        $$("#" + l + ">td").forEach((t) => t.setAttribute("class", "actif"));
+        [...$$("#tete td")]
+          .find((t) => t.innerText == v)
+          .setAttribute("class", "actif");
+      };
+
+      var turing = () => {
+        var etat = $("#etat").value;
+        var lecture = +$("#lecture").value + 10;
+        var c = $("#r" + lecture).value;
+        if (c == "") c = "b";
+        var programme = [...$$("input")]
+          .filter((i) => i.id.slice(0, 2) == etat + c && i.checked == true)
+          .map((i) => i.id.slice(-1));
+        var ecrire = programme.find((p) => CASES.includes(p));
+        if (ecrire) $("#r" + lecture).value = ecrire == "b" ? "" : ecrire;
+        var dep = programme.find((p) => "gd".includes(p));
+        if (dep)
+          $("#lecture").value = +$("#lecture").value + (dep == "g" ? -1 : 1);
+        var etat_suiv = programme.find((p) => ETATS.includes(p));
+        if (etat_suiv) $("#etat").value = etat_suiv;
+        couleurs(etat + c, $("#lecture").value);
+      };
+
+      var effacer = () => {
+        $$("input").forEach((i) => {
+          i.checked = false;
+          i.value = "";
+        });
+        effacer_coul();
+      };
+      var effacer_coul = () =>
+        $$("td").forEach((t) => t.removeAttribute("class"));
+
+      var auto = (e) => {
+        if (e == "Auto") {
+          id_auto = setInterval(() => turing(), 500);
+          $("#auto").innerText = "Stop";
+        } else {
+          clearInterval(id_auto);
+          $("#auto").innerText = "Auto";
+        }
+      };
+
+      var charger = (ex) => {
+        effacer();
+        $("#etat").value = ex.debut[0];
+        $("#lecture").value = ex.tete;
+        [...ex.debut[2]].forEach(
+          (c, k) => ($("#r" + (ex.debut[1] + k + 10)).value = c == "b" ? "" : c)
+        );
+        Object.entries(ex.programme).forEach(([l, p]) =>
+          [...p].forEach((c) => ($("#" + l + c).checked = true))
+        );
+        couleurs(ex.debut[0] + ex.debut[2][0], ex.tete + "");
+      };
+
+      var exemples = {
+        A: {
+          debut: ["A", 0, "001101"],
+          tete: -3,
+          programme: { Ab: "d", A0: "B", A1: "B", B0: "1d", B1: "d", Bb: "F" },
+        },
+        B: {
+          debut: ["A", 0, "11b111"],
+          tete: 0,
+          programme: { A1: "1d", Ab: "1Bd", B1: "d", Bb: "gC", C1: "bF" },
+        },
+        C: {
+          debut: ["A", 0, "111"],
+          tete: 2,
+          programme: {
+            A0: "g",
+            A1: "0dB",
+            Ab: "dC",
+            B0: "d",
+            Bb: "0gA",
+            C0: "1d",
+            Cb: "F",
+          },
+        },
+
+        D: {
+          debut: ["A", 0, "111b11111"],
+          tete: 0,
+          programme: {
+            A1: "0dB",
+            B1: "d",
+            Bb: "dC",
+            Cb: "d",
+            C1: "bgD",
+            D0: "dA",
+            Db: "g",
+            D1: "g",
+            Ab: "F",
+          },
+        },
+      };
+    </script>
+  </body>
+</html>
