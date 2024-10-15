@@ -5,6 +5,7 @@ This project is a web-based simulation of a Turing machine. The Turing machine o
 - Replacing binary digits (0 → 1)
 - Adding unary numbers
 - Subtracting unary numbers
+- 
 ![interface](./images/interface.png)
 
 
@@ -174,10 +175,32 @@ var exemples = {
     // More examples like B, C, etc.
 };
 ```
+### Automaton for Replacing 'O' with '1'
+The following automaton demonstrates the process of replacing every occurrence of 'O' in the input string with the digit '1':
+
 ![The automaton that replaces O with 1](./images/1.png)
+
+---
+
+### Automaton for Adding Two Unary Numbers
+This automaton represents the operation of adding two unary numbers. It visually depicts the steps involved in summing these numbers:
+
 ![Automaton for adding two unary numbers](./images/2.png)
+
+---
+
+### Automaton for Subtracting Two Unary Numbers
+Here is an automaton that shows how subtraction works when dealing with two unary numbers:
+
 ![Automaton for subtracting two unary numbers](./images/3.png)
+
+---
+
+### Automaton for Doubling the Elements
+The automaton below illustrates the process of doubling the elements in a sequence, effectively multiplying the input by two:
+
 ![Automaton for doubling the elements](./images/4.png)
+
 
 
 ## Customization
