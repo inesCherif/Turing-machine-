@@ -5,7 +5,7 @@ This project is a web-based simulation of a Turing machine. The Turing machine o
 - Replacing binary digits (0 → 1)
 - Adding unary numbers
 - Subtracting unary numbers
-![Interface](images/interface)
+![Interface](./images/interface)
 
 
 
